@@ -65,9 +65,9 @@ contract SimpleBank {
     // Emit the appropriate event
     function enroll() public returns (bool){
       // 1. enroll of the sender of this transaction
-      enrolled[owner] = true; 
-      emit LogEnrolled(owner);
-      return enrolled[owner];
+      enrolled[msg.sender] = true; 
+      emit LogEnrolled(msg.sender);
+      return enrolled[msg.sender];
     }
 
     /// @notice Deposit ether into bank
@@ -87,7 +87,7 @@ contract SimpleBank {
       balances[owner] += msg.value;
       emit LogDepositMade(owner, msg.value);
 
-      //return balances[owner];
+      return msg.value;
     }
 
     /// @notice Withdraw ether from bank
@@ -109,6 +109,8 @@ contract SimpleBank {
       require(balances[owner] >= withdrawAmount);
       balances[owner] -= withdrawAmount;
 
-      emit LogWithdrawal(owner, withdrawAmount, balances[owner]);
+      emit LogWithdrawal(owner, withdrawAmount, balances[msg.sender]);
+
+      return balances[msg.sender];
     }
 }
